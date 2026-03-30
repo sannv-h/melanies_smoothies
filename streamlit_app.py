@@ -49,9 +49,6 @@ VALUES ('{ingredients_string}', '{name_on_order}')
        st.success('Your Smoothie is ordered!', icon="✅")
 
 import requests
-import streamlit as st
-import pandas as pd
 response = requests.get("https://my.smoothiefroot.com/api/fruit/watermelon")
-data = response.json()
-df = pd.json_normalize(data)
-st.dataframe(df, use_container_width=True)
+# st.text(smoothiefroot_response.json())
+sf_df = st.dataframe(data=smoothiefroot_response.json(), use_container_width=True)
