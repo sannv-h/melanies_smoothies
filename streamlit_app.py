@@ -51,6 +51,7 @@ VALUES ('{ingredients_string}', '{name_on_order}')
 import requests
 import streamlit as st
 import pandas as pd
-smoothiefroot_response = requests.get("https://my.smoothiefroot.com/api/fruit/watermelon")
-df = pd.DataFrame([smoothiefroot_response.json()])
+response = requests.get("https://my.smoothiefroot.com/api/fruit/watermelon")
+data = response.json()
+df = pd.json_normalize(data)
 st.dataframe(df, use_container_width=True)
