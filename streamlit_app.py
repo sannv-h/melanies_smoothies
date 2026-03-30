@@ -53,4 +53,4 @@ import streamlit as st
 import pandas as pd
 smoothiefroot_response = requests.get("https://my.smoothiefroot.com/api/fruit/watermelon")
 df = pd.DataFrame([smoothiefroot_response.json()])
-st.dataframe(df, use_container_width=True)
+#st.dataframe(df, use_container_width=True)
