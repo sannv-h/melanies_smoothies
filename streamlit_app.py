@@ -48,38 +48,13 @@ VALUES ('{ingredients_string}', '{name_on_order}')
        session.sql(my_insert_stmt).collect()
        st.success('Your Smoothie is ordered!', icon="✅")
 
-import requests
-import streamlit as st
-import pandas as pd
 
-if ingredients_list:
-    for fruit_chosen in ingredients_list:
 
-        st.subheader(f"{fruit_chosen} Nutrition Information")
 
-        try:
-            # 🔥 Handle spaces like "Dragon Fruit"
-            fruit_api = fruit_chosen.lower().replace(" ", "")
 
-            response = requests.get(f"https://my.smoothiefroot.com/api/fruit/{fruit_api}")
-            data = response.json()
+import requests, pandas as pd, streamlit as st
 
-            # If API returns error (like Ximenia)
-            if "nutrition" not in data:
-                st.warning(f"Sorry, {fruit_chosen} is not in our database.")
-                continue
-
-            # Convert nutrition → rows
-            df = pd.DataFrame(data["nutrition"].items(), columns=["nutrition", "value"])
-
-            # Add other columns
-            df["family"] = data["family"]
-            df["genus"] = data["genus"]
-            df["id"] = data["id"]
-            df["name"] = data["name"]
-            df["order"] = data["order"]
-
-            st.dataframe(df, use_container_width=True)
-
-        except Exception as e:
-            st.error(f"Error fetching {fruit_chosen}")
+d = requests.get("https://my.smoothiefroot.com/api/fruit/watermelon").json()
+st.dataframe(pd.DataFrame({"nutrition":[f"{k}:{v}" for k,v in d["nutrition"].items()]}).assign(**{k:d[k] for k in ["family","genus","id","name","order"]}), use_container_width=True)
+st.subheader(fruit_chosen + ' Nutrition Information')
+smoothiefroot_response = requests.get("https://my.smoothiefroot.com/api/fruit/"+ fruit_chosen)
