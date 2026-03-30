@@ -48,11 +48,7 @@ VALUES ('{ingredients_string}', '{name_on_order}')
        session.sql(my_insert_stmt).collect()
        st.success('Your Smoothie is ordered!', icon="✅")
 
-import requests
-import streamlit as st
-import pandas as pd
-response = requests.get("https://my.smoothiefroot.com/api/fruit/watermelon")
-data = response.json()
-# Normalize nutrition
-df = pd.json_normalize(data)
-st.dataframe(df, use_container_width=True)
+import requests, pandas as pd, streamlit as st
+
+d = requests.get("https://my.smoothiefroot.com/api/fruit/watermelon").json()
+st.dataframe(pd.DataFrame({"nutrition":[f"{k}:{v}" for k,v in d["nutrition"].items()]}).assign(**{k:d[k] for k in ["family","genus","id","name","order"]}), use_container_width=True)
