@@ -58,11 +58,18 @@ if ingredients_list:
         st.subheader(f"{fruit_chosen} Nutrition Information")
 
         try:
-            # 🔥 Use fruit_chosen in API
-            response = requests.get(f"https://my.smoothiefroot.com/api/fruit/{fruit_chosen}")
+            # 🔥 Handle spaces like "Dragon Fruit"
+            fruit_api = fruit_chosen.lower().replace(" ", "")
+
+            response = requests.get(f"https://my.smoothiefroot.com/api/fruit/{fruit_api}")
             data = response.json()
 
-            # ✅ Convert nutrition into rows (like your UI)
+            # If API returns error (like Ximenia)
+            if "nutrition" not in data:
+                st.warning(f"Sorry, {fruit_chosen} is not in our database.")
+                continue
+
+            # Convert nutrition → rows
             df = pd.DataFrame(data["nutrition"].items(), columns=["nutrition", "value"])
 
             # Add other columns
@@ -74,6 +81,5 @@ if ingredients_list:
 
             st.dataframe(df, use_container_width=True)
 
-        except:
-            # ❗ If fruit not in API (like Ximenia)
-            st.warning(f"Sorry, {fruit_chosen} is not in our database.")
+        except Exception as e:
+            st.error(f"Error fetching {fruit_chosen}")
