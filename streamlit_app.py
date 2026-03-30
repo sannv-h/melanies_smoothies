@@ -47,10 +47,10 @@ VALUES ('{ingredients_string}', '{name_on_order}')
     if time_to_insert:
        session.sql(my_insert_stmt).collect()
        st.success('Your Smoothie is ordered!', icon="✅")
+
 import requests
 import streamlit as st
-response = requests.get("https://my.smoothiefroot.com/api/fruit/watermelon")
-data = response.json()
-st.write(data)
-st.df = st.dataframe(data=smoothiefroot_response.json(), use_contanier_width=True)
-
+import pandas as pd
+smoothiefroot_response = requests.get("https://my.smoothiefroot.com/api/fruit/watermelon")
+df = pd.DataFrame([smoothiefroot_response.json()])
+st.dataframe(df, use_container_width=True)
