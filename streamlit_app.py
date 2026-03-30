@@ -50,7 +50,5 @@ VALUES ('{ingredients_string}', '{name_on_order}')
 
 import requests, pandas as pd, streamlit as st
 
-fruit_chosen = st.text_input("Enter fruit", "watermelon")
-d = requests.get(f"https://my.smoothiefroot.com/api/fruit/{fruit_chosen}").json()
-
-st.dataframe(pd.DataFrame({"nutrition":[f"{k} : {v}" for k,v in d["nutrition"].items()]}), use_container_width=True)
+d = requests.get("https://my.smoothiefroot.com/api/fruit/watermelon").json()
+st.dataframe(pd.DataFrame({"nutrition":[f"{k}:{v}" for k,v in d["nutrition"].items()]}).assign(**{k:d[k] for k in ["family","genus","id","name","order"]}), use_container_width=True)
