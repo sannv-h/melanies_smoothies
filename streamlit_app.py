@@ -52,5 +52,5 @@ import streamlit as st
 response = requests.get("https://my.smoothiefroot.com/api/fruit/watermelon")
 data = response.json()
 st.write(data)
-
+st.df = st.dataframe(data=smoothiefroot_response.json(), use_contanier_width=True)
 
