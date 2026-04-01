@@ -24,8 +24,8 @@ rows = my_dataframe.collect()
 fruit_list = [row["FRUIT_NAME"] for row in rows]
 
 pd_df=my_dataframe.to_pandas()
-st.dataframe(pd_df)
-st.stop()
+#st.dataframe(pd_df)
+#st.stop()
 
 
 
